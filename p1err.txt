@@ -1,0 +1,26 @@
+~ P1ERR ===
+~ invalid argument name, cannot start"  with" a digit
+meth relativelyPrime (2a: int, b: int) : bool
+{
+	~ invalid keyword; should be var (parsing error)
+	vr d: int;
+	~ invalid operator
+	var max_div: int === 01;
+
+	var max_div: int = -0;
+	var dv: int = +0;
+
+	var db: int = -10;
+	var dc: int = +10.01;
+	var ts: string = " !?.$@";
+    @ ! ? . $
+	for(d = 2; d <= a and d <= b; d = d + 1)
+	{
+		~ if(condition) { code } else { code }
+		if(a % d == 0 and b % d == 0) {
+			max_div = d;
+		}
+	}
+
+	=> max_div > 1;
+}

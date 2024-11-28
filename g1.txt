@@ -1,0 +1,7 @@
+Start A B_second
+a b c word
+Start
+Start -> a A B_second b
+A -> a A c
+A -> word
+B_second -> b B_second | c

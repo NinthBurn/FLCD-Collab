@@ -1,0 +1,32 @@
+~ P1 - this is a comment
+~ check if two integers are relatively prime
+~ function declaration starts with keyword "meth", return type comes after the function name and is specified by ":"
+~ in case of no return, type will be "none"
+~ curly brackets are used to define code blocks(used for multiple statements)
+~ data types: int, dec, bool, string
+~ logical operators are words: or, and, not ; x and y	x or y	not x
+~ relational operators are the same as C
+~ C style identifiers
+~ line/statement separator is ";"
+
+meth relativelyPrime (a: int, b: int) : bool
+{
+	~ variable declaration; must specify "var", then identifier and type
+	var d: int;
+	~ variable declaration and assignment
+	var max_div: int = 1;
+
+	~ for loop : (statement, condition, statement)
+	for(d = 2; d < a and d < b; d = d + 1)
+	{
+		~ if(condition) { code } else { code }
+		if(a % d == 0 and b % d == 0) {
+			max_div = d;
+		}
+	}
+
+	~ "=>" means return
+	=> max_div > 1;
+}
+
+print(relativelyPrime(4, 15));

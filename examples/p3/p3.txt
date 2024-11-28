@@ -1,0 +1,29 @@
+~ P3
+~ find greatest even integer from a list of n numbers
+~ array type is defined as [type_name]#
+~ accessing array elements: [identifier]->[position]
+~ first position is 0
+~ constant arrays are defined as [<element1>, <element2> ... <elementn>]
+
+meth greatestEven(n: int, arr: int#): int
+{
+	var greatest: int = -1;
+	var current_number: int;
+	var index: int;
+    var string_const: string;
+    string_const = "hello world!";
+    
+	for(index = 0; index < n; index = index + 1)
+	{
+		current_number = arr -> index;
+
+		if(current_number % 2 == 0 and current_number > greatest)
+			greatest = current_number;
+	}
+
+	=> greatest;
+}
+
+var ex: int# = [4, 2, 68, 18];
+
+print(greatestEven(4, ex))

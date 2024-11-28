@@ -1,0 +1,24 @@
+~ P2
+~ greatest common divisor of 2 integers
+~ curly brackets are not necessary for single statements
+
+meth min(a: int, b: int) : int
+{
+	if(a < b) => a;
+	else => b;
+}
+
+meth gcd (a: int, b: int) : int
+{
+    var result: int = min(a, b);
+    while (result > 0) {
+        if (a % result == 0 and b % result == 0) {
+            break;
+        }
+        result = result - 1;
+    }
+
+    => result;
+}
+
+print(gcd(25, 15));
