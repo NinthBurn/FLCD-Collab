@@ -53,7 +53,7 @@ public class AnalysisItem {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         AnalysisItem item = (AnalysisItem) obj;
-        return cursor == item.getCursor() && leftHandSide.equals(item.getLeftHandSide()) && rightHandSide.equals(item.getRightHandSide());
+        return cursor == item.getCursor() && leftHandSide.trim().equals(item.getLeftHandSide().trim()) && rightHandSide.trim().equals(item.getRightHandSide().trim());
     }
 
     @Override

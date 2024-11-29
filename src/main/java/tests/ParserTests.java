@@ -95,7 +95,8 @@ public class ParserTests {
         results.put(new Pair<>("gt.txt", "a"), new State(
                 new ArrayList<AnalysisItem>(
                         List.of(
-                                new AnalysisItem("S", "a A", 1)
+                                new AnalysisItem("S", "a A", 1),
+                                new AnalysisItem("A", "a b", 0)
                         )
                 )
         ));
