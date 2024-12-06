@@ -8,7 +8,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception{
         printMenuGrammar();
-        Grammar grammar = new Grammar("gt.txt");
+        Grammar grammar = new Grammar("gt2.txt");
+        LR0Parser parser = new LR0Parser(grammar);
 
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
@@ -45,9 +46,26 @@ public class Main {
                     break;
 
                 case "7":
-                    LR0Parser parser = new LR0Parser(grammar);
-
+                    parser = new LR0Parser(grammar);
                     System.out.println(parser.getCanonicalCollection().toString());
+                    parser.buildParserTable(parser.getCanonicalCollection());
+                    System.out.println(parser.parserTableToString());
+                    break;
+
+                case "8":
+                    parser = new LR0Parser(grammar);
+                    parser.buildParserTable(parser.getCanonicalCollection());
+
+                    System.out.print("Write the nonterminal: ");
+                    Scanner scanner3 = new Scanner(System.in);
+                    String sequence2 = scanner3.nextLine();
+
+                    try{
+                        System.out.println("The sequence is accepted by the grammar: " + parser.parseMyBitchUp(sequence2));
+
+                    }catch(Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     break;
 
                 case "?", "h":
@@ -129,6 +147,7 @@ public class Main {
         System.out.println("5. Print all the productions for a given nonterminal");
         System.out.println("6. Check if the grammar is context-free");
         System.out.println("7. Print the canonical collection of the grammar");
+        System.out.println("8. Check if a sequence belongs to the grammar");
         System.out.println("0. Exit | ?,h - print the menu");
     }
 

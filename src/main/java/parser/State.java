@@ -29,6 +29,7 @@ public class State {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
+
         return items.equals(state.items);
     }
 }

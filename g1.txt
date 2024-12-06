@@ -1,7 +1,7 @@
 Start A B_second
-a b c word
+a b c w
 Start
 Start -> a A B_second b
 A -> a A c
-A -> word
+A -> w
 B_second -> b B_second | c

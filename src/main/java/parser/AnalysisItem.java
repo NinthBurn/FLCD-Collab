@@ -8,14 +8,14 @@ public class AnalysisItem {
     private int cursor;
 
     public AnalysisItem(String leftHandSide, String rightHandSide) {
-        this.leftHandSide = leftHandSide;
-        this.rightHandSide = rightHandSide;
+        this.leftHandSide = leftHandSide.trim();
+        this.rightHandSide = rightHandSide.trim();
         this.cursor = 0;
     }
 
     public AnalysisItem(String leftHandSide, String rightHandSide, int dotPosition) {
-        this.leftHandSide = leftHandSide;
-        this.rightHandSide = rightHandSide;
+        this.leftHandSide = leftHandSide.trim();
+        this.rightHandSide = rightHandSide.trim();
         this.cursor = dotPosition;
     }
     
@@ -34,18 +34,18 @@ public class AnalysisItem {
         if(cursorAtEnd())
             return "";
 
-        return rightHandSide.split(" ")[cursor];
+        return rightHandSide.split(Grammar.symbolSeparator)[cursor];
     }
 
     public AnalysisItem moveCursorRight() {
-        if (cursor < rightHandSide.split(" ").length)
+        if (cursor < rightHandSide.split(Grammar.symbolSeparator).length)
             return new AnalysisItem(leftHandSide, rightHandSide, cursor + 1);
 
         return this;
     }
 
     public boolean cursorAtEnd() {
-        return cursor == rightHandSide.split(" ").length;
+        return cursor == rightHandSide.split(Grammar.symbolSeparator).length;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AnalysisItem {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         AnalysisItem item = (AnalysisItem) obj;
-        return cursor == item.getCursor() && leftHandSide.equals(item.getLeftHandSide()) && rightHandSide.equals(item.getRightHandSide());
+        return cursor == item.getCursor() && leftHandSide.trim().equals(item.getLeftHandSide().trim()) && rightHandSide.trim().equals(item.getRightHandSide().trim());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AnalysisItem {
 
     @Override
     public String toString() {
-        String[] rightHandsSides = rightHandSide.split(" ");
+        String[] rightHandsSides = rightHandSide.split(Grammar.symbolSeparator);
         StringBuilder result = new StringBuilder(leftHandSide + " -> ");
 
         for(int index = 0; index < rightHandsSides.length; ++index) {

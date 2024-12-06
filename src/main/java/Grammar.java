@@ -1,15 +1,14 @@
-package parser;
+import adt.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
 
 public class Grammar {
-    public final static String symbolSeparator = " ";
-    public final static String productionSeparator = "|";
-    public final static String productionSymbol = "->";
-    public final static String epsilon = "ε";
-    private final static String enrichmentSymbol = "enriched_grammar";
+    private final static String symbolSeparator = " ";
+    private final static String productionSeparator = "|";
+    private final static String productionSymbol = "->";
+    private final static String epsilon = "ε";
     private List<String> terminals;
     private List<String> nonTerminals;
     private final Map<String, List<String>> productions;
@@ -21,23 +20,16 @@ public class Grammar {
         extractFromFile(filename);
     }
 
-    public Grammar(List<String> terminals, List<String> nonTerminals, String startingSymbol, Map<String, List<String>> productions) {
-        this.terminals = terminals;
-        this.nonTerminals = nonTerminals;
-        this.productions = productions;
-        this.startingSymbol = startingSymbol;
-    }
-
     private void extractFromFile(String filename) throws Exception{
         BufferedReader reader;
 
         reader = new BufferedReader(new FileReader(filename));
         String line = reader.readLine();
 
-        this.nonTerminals = new ArrayList<>(List.of(line.trim().split(symbolSeparator)));
+        this.nonTerminals = List.of(line.trim().split(symbolSeparator));
 
         line = reader.readLine();
-        this.terminals = new ArrayList<>(List.of(line.trim().split(symbolSeparator)));
+        this.terminals = List.of(line.trim().split(symbolSeparator));
 
         line = reader.readLine();
         this.startingSymbol = line.trim();
@@ -125,15 +117,6 @@ public class Grammar {
                 return false;
 
         return true;
-    }
-
-    public Grammar getEnrichedGrammar() {
-        Grammar enrichedGrammar = new Grammar(terminals, nonTerminals, enrichmentSymbol, productions);
-
-        enrichedGrammar.nonTerminals.add(enrichmentSymbol);
-        enrichedGrammar.productions.putIfAbsent(enrichmentSymbol, List.of(startingSymbol));
-
-        return enrichedGrammar;
     }
 
     public List<String> getTerminals() {
