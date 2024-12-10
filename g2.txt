@@ -1,36 +1,42 @@
-start declaration_stmt declaration_stmt_end declaration arithmetic_expression_end data_type type array_type compound_stmt stmt_list stmt simple_stmt struct_stmt assign_stmt io_stmt expression arithmetic_expression relational_expression logical_expression term relational_operator negation_operator logical_operator arithmetic_operator arithmetic_expression array_const array_const_end if_stmt while_stmt for_stmt condition io_operation
-var ; , : { } = read print [ ] ( ) if else while for identifier constant # and or not > < == != >= <= + - * / % int float string bool
+start declaration_stmt logical_expression_tail arithmetic_expression_end else_stmt arithmetic_expression_tail method_declaration_stmt declaration_stmt_end declaration data_type type array_type compound_stmt stmt_list stmt simple_stmt struct_stmt assign_stmt io_stmt expression arithmetic_expression relational_expression logical_expression term relational_operator negation_operator logical_operator arithmetic_operator arithmetic_expression array_const array_const_end if_stmt while_stmt for_stmt condition io_operation
+var ; , : { } = read print [ ] ( ) if else while meth for identifier constant # and or not > < == != >= <= + - * / % int float string bool int# float# string# bool#
 start
 
 start -> compound_stmt
 
-relational_operator -> > | < | == | != | >= | <=
-negation_operator -> not
-logical_operator -> and | or
-arithmetic_operator -> + | - | * | / | %
-
-declaration_stmt -> var declaration declaration_stmt_end
-declaration_stmt_end -> ; | , declaration declaration_stmt_end
-declaration -> identifier : data_type
-data_type -> type | array_type
-
-type -> int | float | string | bool
-array_type -> type #
-
 compound_stmt -> { stmt_list }
-stmt_list -> stmt | stmt ; stmt_list
-stmt -> simple_stmt | struct_stmt | declaration_stmt
+stmt_list -> stmt | stmt_list stmt
+stmt -> simple_stmt ; | struct_stmt ; | declaration_stmt ; | meth identifier ( ) { stmt_list } | meth identifier ( method_declaration_stmt ) { stmt_list }
 
 simple_stmt -> assign_stmt | io_stmt
 assign_stmt -> identifier = expression
 io_stmt -> io_operation ( identifier )
 io_operation -> read | print
 
-expression -> arithmetic_expression | relational_expression | logical_expression | term
+relational_operator -> > | < | == | != | >= | <=
+negation_operator -> not
+logical_operator -> and | or
+arithmetic_operator -> + | - | * | / | %
+
+declaration_stmt -> var declaration | declaration_stmt , declaration
+method_declaration_stmt -> declaration | method_declaration_stmt , declaration
+declaration_stmt_end -> ε
+declaration -> identifier : data_type
+data_type -> array_type | type
+
+type -> int | float | string | bool
+
+array_type ->  int# | float# | string# | bool#
+
+expression -> arithmetic_expression | relational_expression | logical_expression
+
 relational_expression -> term relational_operator term
-logical_expression -> negation_operator logical_expression | term logical_operator logical_expression | term
-arithmetic_expression -> term arithmetic_operator arithmetic_expression_end
-arithmetic_expression_end -> term | arithmetic_expression
+logical_expression -> term logical_expression_tail
+logical_expression_tail -> logical_operator term logical_expression_tail | negation_operator logical_expression_tail | ε
+
+arithmetic_expression -> term arithmetic_expression_tail
+arithmetic_expression_tail -> arithmetic_operator term arithmetic_expression_tail | arithmetic_expression_end
+arithmetic_expression_end -> term
 
 term -> constant | array_const | identifier
 array_const -> [ constant array_const_end
@@ -38,7 +44,8 @@ array_const_end -> ] | , constant ]
 
 struct_stmt -> if_stmt | while_stmt | for_stmt
 
-if_stmt -> if condition compound_stmt | if condition compound_stmt else compound_stmt
+if_stmt -> if condition compound_stmt
+else_stmt -> else compound_stmt
 
 while_stmt -> while ( condition ) compound_stmt
 

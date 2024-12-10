@@ -1,6 +1,8 @@
 package parser;
 
 import adt.Pair;
+import adt.ParseTreeNode;
+import adt.ParseTreeTable;
 import parser.table.ParserTableAction;
 import parser.table.ParserTableActionType;
 import parser.table.ParserTableRow;
@@ -186,17 +188,53 @@ public class LR0Parser {
             System.out.println(ex.getMessage() + " for row " + currentRow.getStateIndex());
         }
     }
-    public boolean parseMyBitchUp(String sequence) {
+
+    public ParseTreeTable buildParseTree(Stack<Integer> outputBand) {
+        ParseTreeTable tree = new ParseTreeTable(grammar.getStartingSymbol());
+
+        int currentProduction;
+        if(!outputBand.isEmpty()) {
+            currentProduction = outputBand.pop();
+            tree.setRoot(new ParseTreeNode(productions.get(currentProduction).getLeftHandSide()));
+
+            var root = tree.getRoot();
+            String[] symbols = productions.get(currentProduction).getRightHandSide().split(Grammar.symbolSeparator);
+
+            for(var symbol : symbols)
+                root.addChild(new ParseTreeNode(symbol));
+        }
+
+        while(!outputBand.isEmpty()) {
+            currentProduction = outputBand.pop();
+            String[] symbols = productions.get(currentProduction).getRightHandSide().split(Grammar.symbolSeparator);
+
+            List<ParseTreeNode> leaves = tree.getLeaves();
+
+            ParseTreeNode rightMostTerminal = null;
+            for(int index = leaves.size() - 1; index > -1; --index) {
+                rightMostTerminal = leaves.get(index);
+                if(grammar.getNonTerminals().contains(rightMostTerminal.getSymbol()))
+                    break;
+            }
+
+            for(var symbol : symbols)
+                rightMostTerminal.addChild(new ParseTreeNode(symbol));
+        }
+
+        return tree;
+    }
+    public boolean parseMyBitchUp(List<String> sequence) {
         Stack<String> inputStack = new Stack<>();
         Stack<String> workStack = new Stack<>();
         Stack<Integer> outputBand = new Stack<>();
 
+        System.out.println(productions);
         workStack.add("$");
         workStack.add("s0");
 
         inputStack.add("$");
-        for(int index = sequence.length() - 1; index > -1; --index)
-            inputStack.add(String.valueOf(sequence.charAt(index)));
+        for(int index = sequence.size() - 1; index > -1; --index)
+            inputStack.add(String.valueOf(sequence.get(index)));
 
         boolean inputAccepted = false;
         int parseStep = 0;
@@ -237,10 +275,10 @@ public class LR0Parser {
                     String RHS = productions.get(productionIndex).getRightHandSide();
                     String LHS = productions.get(productionIndex).getLeftHandSide();
 
-                    outputBand.push(productionIndex);
-
                     String[] symbols = RHS.split(Grammar.symbolSeparator);
                     Stack<String> RHS_Stack = new Stack<>();
+
+                    outputBand.push(productionIndex);
 
                     for (String symbol : symbols) {
                         RHS_Stack.push(symbol);
@@ -268,6 +306,8 @@ public class LR0Parser {
 
             } else throw new RuntimeException("Invalid top of working stack: " + workStackTop);
         }
+
+        System.out.println(buildParseTree(outputBand));
 
         return inputAccepted;
     }

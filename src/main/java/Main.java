@@ -1,14 +1,32 @@
+import adt.ParseTreeNode;
+import adt.ParseTreeTable;
 import automata.FiniteAutomata;
 import parser.Grammar;
 import parser.LR0Parser;
 import scanner.TokenScanner;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception{
+        ParseTreeTable test = new ParseTreeTable("S");
+        ParseTreeNode root = test.getRoot();
+        root.addChild(new ParseTreeNode("a"));
+        root.addChild(new ParseTreeNode("A"));
+        root.addChild(new ParseTreeNode("c"));
+        ParseTreeNode A = test.getRoot().getChildren().get(1);
+        A.addChild(new ParseTreeNode("a"));
+        A.addChild(new ParseTreeNode("B"));
+        ParseTreeNode B = A.getChildren().get(1);
+        B.addChild(new ParseTreeNode("d"));
+
+        for(var leaf : test.getLeaves())
+            System.out.println(leaf.getSymbol());
+
         printMenuGrammar();
-        Grammar grammar = new Grammar("gt2.txt");
+        Grammar grammar = new Grammar("g2.txt");
         LR0Parser parser = new LR0Parser(grammar);
 
         System.out.print("> ");
@@ -56,12 +74,15 @@ public class Main {
                     parser = new LR0Parser(grammar);
                     parser.buildParserTable(parser.getCanonicalCollection());
 
-                    System.out.print("Write the nonterminal: ");
+                    System.out.print("Write the sequence: ");
                     Scanner scanner3 = new Scanner(System.in);
                     String sequence2 = scanner3.nextLine();
 
                     try{
-                        System.out.println("The sequence is accepted by the grammar: " + parser.parseMyBitchUp(sequence2));
+//                        List<String> input = List.of("{ meth identifier ( ) { read ( identifier ) ; print ( identifier ) ; } print ( identifier ) ; }".split(" "));
+                        List<String> input = List.of("{ meth identifier ( identifier : int , identifier : int , identifier : int , identifier : int , identifier : int ) { read ( identifier ) ; print ( identifier ) ; } print ( identifier ) ; }".split(" "));
+//                        Arrays.stream(sequence2.split("")).toList()
+                        System.out.println("The sequence is accepted by the grammar: " + parser.parseMyBitchUp(input));
 
                     }catch(Exception ex) {
                         System.out.println(ex.getMessage());
