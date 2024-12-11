@@ -8,25 +8,34 @@
 ~ relational operators are the same as C
 ~ C style identifiers
 ~ line/statement separator is ";"
-
-meth relativelyPrime (a: int, b: int) : bool
+{
+meth relativelyPrime (a: int, b: int)
 {
 	~ variable declaration; must specify "var", then identifier and type
 	var d: int;
 	~ variable declaration and assignment
-	var max_div: int = 1;
+	var max_div: int;
+	max_div = 1;
+    d = a + b;
+
+    if(b < a){
+        d = a;
+        a = b;
+        b = a;
+    };
 
 	~ for loop : (statement, condition, statement)
-	for(d = 2; d < a and d < b; d = d + 1)
+	for(d = 2; d < a; d = d + 1)
 	{
 		~ if(condition) { code } else { code }
 		if(a % d == 0 and b % d == 0) {
 			max_div = d;
-		}
+		};
 	}
 
 	~ "=>" means return
 	=> max_div > 1;
 }
 
-print(relativelyPrime(4, 15));
+print(&relativelyPrime(4, 15));
+}

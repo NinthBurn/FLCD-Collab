@@ -19,8 +19,8 @@ public class TokenScanner {
 
     List<String> operators = List.of("+", "-", "*", "/", "%", "=>", ">=", "<=", "==", "!=", "=", ">", "<");
     List<String> objectOperators = List.of("#", "->");
-    List<String> separators = List.of(" ", "\t", "\n", "[", "]", "{", "}", "(", ")", ",", ";", ":", "~", "\"", "#");
-    List<String> reservedWords = List.of("var", "none", "int", "float", "string", "bool", "if", "else", "while", "for", "read", "print", "and", "or", "not", "meth", "true", "false", "break");
+    List<String> separators = List.of(" ", "\t", "\n", "[", "]", "{", "}", "(", ")", ",", ";", ":", "~", "\"", "&");
+    List<String> reservedWords = List.of("var", "none", "int", "float", "string", "bool", "int#", "float#", "string#", "bool#", "if", "else", "while", "for", "read", "print", "and", "or", "not", "meth", "true", "false", "break");
 
     public TokenScanner(){
         this.symbolTable = new SymbolTable(symbolTableSize);
@@ -181,5 +181,30 @@ public class TokenScanner {
             writer.close();
 
         }catch(Exception ignored){}
+    }
+
+    public List<String> convertPIFToSequence() {
+        BufferedReader reader;
+        List<String> sequence = new ArrayList<>();
+
+        try {
+            reader = new BufferedReader(new FileReader("PIF.out"));
+            String line = reader.readLine();
+
+            while (line != null) {
+                String currentSymbol = line.split(" ")[0];
+
+                if(!currentSymbol.equals(" ") && !currentSymbol.equals("\n") && !currentSymbol.equals("\t"))
+                    sequence.add(currentSymbol);
+
+                line = reader.readLine();
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return sequence;
     }
 }

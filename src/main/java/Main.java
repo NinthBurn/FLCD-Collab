@@ -1,33 +1,15 @@
-import adt.ParseTreeNode;
-import adt.ParseTreeTable;
 import automata.FiniteAutomata;
 import parser.Grammar;
 import parser.LR0Parser;
 import scanner.TokenScanner;
-
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception{
-        ParseTreeTable test = new ParseTreeTable("S");
-        ParseTreeNode root = test.getRoot();
-        root.addChild(new ParseTreeNode("a"));
-        root.addChild(new ParseTreeNode("A"));
-        root.addChild(new ParseTreeNode("c"));
-        ParseTreeNode A = test.getRoot().getChildren().get(1);
-        A.addChild(new ParseTreeNode("a"));
-        A.addChild(new ParseTreeNode("B"));
-        ParseTreeNode B = A.getChildren().get(1);
-        B.addChild(new ParseTreeNode("d"));
-
-        for(var leaf : test.getLeaves())
-            System.out.println(leaf.getSymbol());
-
         printMenuGrammar();
-        Grammar grammar = new Grammar("g2.txt");
-        LR0Parser parser = new LR0Parser(grammar);
+        Grammar grammar = new Grammar("gt3.txt");
+        LR0Parser parser;
 
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
@@ -71,6 +53,7 @@ public class Main {
                     break;
 
                 case "8":
+                    grammar = new Grammar("gt3.txt");
                     parser = new LR0Parser(grammar);
                     parser.buildParserTable(parser.getCanonicalCollection());
 
@@ -79,10 +62,53 @@ public class Main {
                     String sequence2 = scanner3.nextLine();
 
                     try{
-//                        List<String> input = List.of("{ meth identifier ( ) { read ( identifier ) ; print ( identifier ) ; } print ( identifier ) ; }".split(" "));
-                        List<String> input = List.of("{ meth identifier ( identifier : int , identifier : int , identifier : int , identifier : int , identifier : int ) { read ( identifier ) ; print ( identifier ) ; } print ( identifier ) ; }".split(" "));
-//                        Arrays.stream(sequence2.split("")).toList()
+                        var input = Arrays.stream(sequence2.split("")).toList();
                         System.out.println("The sequence is accepted by the grammar: " + parser.parseMyBitchUp(input));
+
+                    }catch(Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+
+                case "9":
+                    parser = new LR0Parser(new Grammar("g2.txt"));
+                    parser.buildParserTable(parser.getCanonicalCollection());
+
+                    try{
+                        TokenScanner tokenScanner = new TokenScanner();
+                        tokenScanner.scan("p1.txt");
+
+                        System.out.println("The sequence is accepted by the grammar: " + parser.parseMyBitchUp(tokenScanner.convertPIFToSequence()));
+
+                    }catch(Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+
+                case "10":
+                    parser = new LR0Parser(new Grammar("g2.txt"));
+                    parser.buildParserTable(parser.getCanonicalCollection());
+
+                    try{
+                        TokenScanner tokenScanner = new TokenScanner();
+                        tokenScanner.scan("p2.txt");
+
+                        System.out.println("The sequence is accepted by the grammar: " + parser.parseMyBitchUp(tokenScanner.convertPIFToSequence()));
+
+                    }catch(Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    break;
+
+                case "11":
+                    parser = new LR0Parser(new Grammar("g2.txt"));
+                    parser.buildParserTable(parser.getCanonicalCollection());
+
+                    try{
+                        TokenScanner tokenScanner = new TokenScanner();
+                        tokenScanner.scan("p3.txt");
+
+                        System.out.println("The sequence is accepted by the grammar: " + parser.parseMyBitchUp(tokenScanner.convertPIFToSequence()));
 
                     }catch(Exception ex) {
                         System.out.println(ex.getMessage());
@@ -169,6 +195,9 @@ public class Main {
         System.out.println("6. Check if the grammar is context-free");
         System.out.println("7. Print the canonical collection of the grammar");
         System.out.println("8. Check if a sequence belongs to the grammar");
+        System.out.println("9. Run parser on P1.txt");
+        System.out.println("10. Run parser on P2.txt");
+        System.out.println("11. Run parser on P3.txt");
         System.out.println("0. Exit | ?,h - print the menu");
     }
 

@@ -7,10 +7,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ParseTreeNode {
-    String symbol;
-    ParseTreeNode parent;
+    private final String symbol;
+    private ParseTreeNode parent;
     // from left to right - the order of insertion
-    List<ParseTreeNode> children;
+    private final List<ParseTreeNode> children;
 
     public ParseTreeNode(String symbol, ParseTreeNode parent) {
         this.symbol = symbol;
@@ -91,7 +91,11 @@ public class ParseTreeNode {
                 ", children=" + childrenDetails;
     }
 
-    public String toStringSimple(int depth, List<Integer> previousLines) {
+    public String toStringTree() {
+        return toStringTree(0, new ArrayList<>());
+    }
+
+    private String toStringTree(int depth, List<Integer> previousLines) {
         int maxDepth = 9000;
         if (depth > maxDepth) {
             return symbol + " - [...]";
@@ -115,10 +119,10 @@ public class ParseTreeNode {
 
             if(i == children.size() - 1) {
                 previousLines.removeIf(a -> a == depth);
-                result += indent + "|\n" + indent + "└─> " + child.toStringSimple(depth + 1, previousLines);
+                result += indent + "|\n" + indent + "└─> " + child.toStringTree(depth + 1, previousLines);
             }
             else
-                result += indent + "|\n" + indent + "├─> " + child.toStringSimple(depth + 1, previousLines);
+                result += indent + "|\n" + indent + "├─> " + child.toStringTree(depth + 1, previousLines);
 
         }
 

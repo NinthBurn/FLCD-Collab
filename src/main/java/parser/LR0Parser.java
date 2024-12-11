@@ -8,6 +8,11 @@ import parser.table.ParserTableActionType;
 import parser.table.ParserTableRow;
 import utils.TableBuilder;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class LR0Parser {
@@ -239,11 +244,12 @@ public class LR0Parser {
         boolean inputAccepted = false;
         int parseStep = 0;
 
+        clearParseLogFile();
         while(!workStack.isEmpty()) {
-            System.out.println("Parsing step #" + parseStep++);
-            System.out.println("Work stack: " + workStack);
-            System.out.println("Input stack: " + inputStack);
-            System.out.println("Output band: " + outputBand + "\n");
+            writeParseLogToFile("Parsing step #" + parseStep++
+                    + "\nWork stack: " + workStack
+                    + "\nInput stack: " + inputStack
+                    + "\nOutput band: " + outputBand + "\n\n");
             String workStackTop = workStack.peek();
 
             if(workStackTop.matches("s[0-9]+")) {
@@ -307,9 +313,40 @@ public class LR0Parser {
             } else throw new RuntimeException("Invalid top of working stack: " + workStackTop);
         }
 
-        System.out.println(buildParseTree(outputBand));
+        writeParseTreeToString(buildParseTree(outputBand));
 
         return inputAccepted;
+    }
+
+    private void clearParseLogFile() {
+        try{
+            Path fileToDeletePath = Paths.get("parse_log.txt");
+            Files.delete(fileToDeletePath);
+        }catch(Exception ignored){}
+    }
+
+    private void writeParseLogToFile(String log) {
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("parse_log.txt", true));
+            writer.write(log);
+            writer.close();
+        }catch(Exception ignored){}
+    }
+
+    private void writeParseTreeToString(ParseTreeTable tree) {
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("parse_tree_graph.txt", false));
+            writer.write(tree.toString());
+            writer.close();
+
+            writer = new BufferedWriter(new FileWriter("parse_tree_verbose.txt", false));
+            writer.write(tree.toStringVerbose());
+            writer.close();
+
+            writer = new BufferedWriter(new FileWriter("parse_tree_table.txt", false));
+            writer.write(tree.toStringTable());
+            writer.close();
+        }catch(Exception ignored){}
     }
 
     public String parserTableToString() {

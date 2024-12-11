@@ -1,0 +1,65 @@
+Parsing step #0
+Work stack: [$, s0]
+Input stack: [$, c, d, c, b, a, a]
+Output band: []
+
+Parsing step #1
+Work stack: [$, s0, a, s2]
+Input stack: [$, c, d, c, b, a]
+Output band: []
+
+Parsing step #2
+Work stack: [$, s0, a, s2, a, s4]
+Input stack: [$, c, d, c, b]
+Output band: []
+
+Parsing step #3
+Work stack: [$, s0, a, s2, a, s4, b, s8]
+Input stack: [$, c, d, c]
+Output band: []
+
+Parsing step #4
+Work stack: [$, s0, a, s2, a, s4, b, s8, c, s7]
+Input stack: [$, c, d]
+Output band: []
+
+Parsing step #5
+Work stack: [$, s0, a, s2, a, s4, b, s8, B, s12]
+Input stack: [$, c, d]
+Output band: [4]
+
+Parsing step #6
+Work stack: [$, s0, a, s2, a, s4, b, s8, B, s12, d, s14]
+Input stack: [$, c]
+Output band: [4]
+
+Parsing step #7
+Work stack: [$, s0, a, s2, a, s4, b, s8, B, s12, C, s13]
+Input stack: [$, c]
+Output band: [4, 6]
+
+Parsing step #8
+Work stack: [$, s0, a, s2, a, s4, B, s9]
+Input stack: [$, c]
+Output band: [4, 6, 5]
+
+Parsing step #9
+Work stack: [$, s0, a, s2, A, s3]
+Input stack: [$, c]
+Output band: [4, 6, 5, 1]
+
+Parsing step #10
+Work stack: [$, s0, a, s2, A, s3, c, s7]
+Input stack: [$]
+Output band: [4, 6, 5, 1]
+
+Parsing step #11
+Work stack: [$, s0, a, s2, A, s3, B, s6]
+Input stack: [$]
+Output band: [4, 6, 5, 1, 4]
+
+Parsing step #12
+Work stack: [$, s0, S, s1]
+Input stack: [$]
+Output band: [4, 6, 5, 1, 4, 0]
+

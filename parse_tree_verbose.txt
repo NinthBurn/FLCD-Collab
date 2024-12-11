@@ -1,0 +1,14 @@
+ParseTreeTable{
+ParseTreeNode symbol='S', parent=null, children=
+	ParseTreeNode symbol='a', parent=S, children=[],
+	ParseTreeNode symbol='A', parent=S, children=
+			ParseTreeNode symbol='a', parent=A, children=[],
+			ParseTreeNode symbol='B', parent=A, children=
+					ParseTreeNode symbol='b', parent=B, children=[],
+					ParseTreeNode symbol='B', parent=B, children=
+							ParseTreeNode symbol='c', parent=B, children=[],
+					ParseTreeNode symbol='C', parent=B, children=
+							ParseTreeNode symbol='d', parent=C, children=[],
+	ParseTreeNode symbol='B', parent=S, children=
+			ParseTreeNode symbol='c', parent=B, children=[]
+}

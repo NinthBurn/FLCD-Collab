@@ -1,54 +1,51 @@
-start declaration_stmt logical_expression_tail arithmetic_expression_end else_stmt arithmetic_expression_tail method_declaration_stmt declaration_stmt_end declaration data_type type array_type compound_stmt stmt_list stmt simple_stmt struct_stmt assign_stmt io_stmt expression arithmetic_expression relational_expression logical_expression term relational_operator negation_operator logical_operator arithmetic_operator arithmetic_expression array_const array_const_end if_stmt while_stmt for_stmt condition io_operation
-var ; , : { } = read print [ ] ( ) if else while meth for identifier constant # and or not > < == != >= <= + - * / % int float string bool int# float# string# bool#
+start args args_end function_item user_defined_item declaration_stmt return_stmt ar_expression else_stmt method_args_declaration_stmt declaration data_type type array_type compound_stmt stmt_list stmt simple_stmt struct_stmt assign_stmt io_stmt term relational_operator negation_operator logical_operator arithmetic_operator array_const array_const_end if_stmt while_stmt for_stmt io_operation
+var ; , : { } = read print [ ] ( ) if break else while meth for IDENTIFIER CONSTANT # and or not > < == != >= <= + - * / % int float string bool int# float# string# bool# => false true & ->
 start
 
 start -> compound_stmt
 
 compound_stmt -> { stmt_list }
 stmt_list -> stmt | stmt_list stmt
-stmt -> simple_stmt ; | struct_stmt ; | declaration_stmt ; | meth identifier ( ) { stmt_list } | meth identifier ( method_declaration_stmt ) { stmt_list }
+stmt -> simple_stmt | io_stmt ; | struct_stmt | declaration_stmt ;
+stmt -> meth IDENTIFIER ( ) { stmt_list }
+stmt -> meth IDENTIFIER ( method_args_declaration_stmt ) { stmt_list }
+stmt -> meth IDENTIFIER ( ) : data_type { stmt_list }
+stmt -> meth IDENTIFIER ( method_args_declaration_stmt ) : data_type { stmt_list }
 
-simple_stmt -> assign_stmt | io_stmt
-assign_stmt -> identifier = expression
-io_stmt -> io_operation ( identifier )
+simple_stmt -> assign_stmt | return_stmt | break
+assign_stmt -> IDENTIFIER = ar_expression
+io_stmt -> io_operation ( user_defined_item )
+return_stmt -> => ar_expression
 io_operation -> read | print
-
-relational_operator -> > | < | == | != | >= | <=
-negation_operator -> not
-logical_operator -> and | or
-arithmetic_operator -> + | - | * | / | %
-
-declaration_stmt -> var declaration | declaration_stmt , declaration
-method_declaration_stmt -> declaration | method_declaration_stmt , declaration
-declaration_stmt_end -> ε
-declaration -> identifier : data_type
-data_type -> array_type | type
-
-type -> int | float | string | bool
-
-array_type ->  int# | float# | string# | bool#
-
-expression -> arithmetic_expression | relational_expression | logical_expression
-
-relational_expression -> term relational_operator term
-logical_expression -> term logical_expression_tail
-logical_expression_tail -> logical_operator term logical_expression_tail | negation_operator logical_expression_tail | ε
-
-arithmetic_expression -> term arithmetic_expression_tail
-arithmetic_expression_tail -> arithmetic_operator term arithmetic_expression_tail | arithmetic_expression_end
-arithmetic_expression_end -> term
-
-term -> constant | array_const | identifier
-array_const -> [ constant array_const_end
-array_const_end -> ] | , constant ]
 
 struct_stmt -> if_stmt | while_stmt | for_stmt
 
-if_stmt -> if condition compound_stmt
-else_stmt -> else compound_stmt
+if_stmt -> if ( ar_expression compound_stmt ; | if ( ar_expression compound_stmt else_stmt | if ( ar_expression stmt ; | if ( ar_expression stmt else_stmt
+else_stmt -> else compound_stmt | else stmt
 
-while_stmt -> while ( condition ) compound_stmt
+while_stmt -> while ( ar_expression compound_stmt
+for_stmt -> for ( assign_stmt ar_expression assign_stmt compound_stmt
 
-for_stmt -> for ( assign_stmt ; condition ; assign_stmt ) compound_stmt
+relational_operator -> > | < | == | != | >= | <= | logical_operator
+negation_operator -> not
+logical_operator -> and | or
+arithmetic_operator -> + | - | * | / | % | ->
 
-condition -> relational_expression | logical_expression
+declaration_stmt -> var declaration | declaration_stmt , declaration
+method_args_declaration_stmt -> declaration | method_args_declaration_stmt , declaration
+declaration -> IDENTIFIER : data_type
+data_type -> array_type | type
+
+type -> int | float | string | bool
+array_type ->  int# | float# | string# | bool#
+
+ar_expression -> user_defined_item arithmetic_operator ar_expression | user_defined_item relational_operator ar_expression | user_defined_item ; | user_defined_item )
+
+user_defined_item -> term | function_item
+function_item -> & IDENTIFIER args
+args -> ( term args_end
+args_end -> ) | , term )
+
+term -> CONSTANT | array_const | IDENTIFIER | true | false
+array_const -> [ CONSTANT array_const_end
+array_const_end -> ] | , CONSTANT array_const_end
